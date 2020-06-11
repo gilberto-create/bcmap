@@ -52,7 +52,7 @@ if( empty( $result ) || $_SESSION['login_user']['group'] != 0 ) {
  */
 $defaultLat = 34.6937127;
 $defaultLng = 135.4951963;
-$areaRate = 0.04;
+$areaRate = 0.02;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
