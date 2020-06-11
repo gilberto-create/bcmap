@@ -1,0 +1,17 @@
+{
+  "name":"Solar Panel Search",
+  "short_name":"SPSearch",
+  "icons": [{
+      "src": "/bcmap/icons/icon-192x192.png",
+      "sizes":"192x192",
+      "type": "image/png"
+    }, {
+      "src": "/bcmap/icons/icon-512x512.png",
+      "sizes":"512x512",
+      "type": "image/png"
+    }],
+  "start_url": "/bcmap/?utm_source=homescreen",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FFBF00"
+}

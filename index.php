@@ -7,6 +7,7 @@
  */
 mb_language('Japanese');
 mb_internal_encoding('UTF-8');
+session_start();
 
 
 
@@ -23,6 +24,26 @@ require_once( 'config/functions.inc' );
  */
 $db = db();
 $url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+
+
+
+/**
+ *	ログインチェック
+ */
+$stmt = $db->query(sprintf(
+		'select * from user where username = "%s" and password = "%s"',
+		$_SESSION['login_user']['username'],
+		$_SESSION['login_user']['password']
+	));
+$result = $stmt->fetchAll( PDO::FETCH_ASSOC );
+
+if( empty( $result ) ) {
+	
+	header( 'location: ./login?url='. urlencode( $_SERVER['REQUEST_URI'] ) );
+} else {
+	
+	$login_user = $_SESSION['login_user'];
+}
 
 
 
@@ -47,7 +68,7 @@ $lng = ( $_GET['lng'] )? $_GET['lng']:0;
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-<title>ページタイトル</title>
+<title>Solar Panel Search</title>
 
 <meta name="description" content="">
 <meta name="keywords" content="">
@@ -55,7 +76,7 @@ $lng = ( $_GET['lng'] )? $_GET['lng']:0;
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#FFBF00">
 <link rel="shortcut icon" href="favicon.ico">
 
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/notosansjapanese.css">
@@ -68,6 +89,13 @@ $lng = ( $_GET['lng'] )? $_GET['lng']:0;
 <link rel="stylesheet" type="text/css" href="css/tablet/content.css">
 <link rel="stylesheet" type="text/css" href="css/mobile/template.css">
 <link rel="stylesheet" type="text/css" href="css/mobile/content.css">
+	
+<!-- app -->
+<meta name="apple-mobile-web-app-capable" content="no">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Solar Panel Search">
+<link rel="apple-touch-icon" href="http://dev.strong-pt.org/bcmap/icons/icon-512x512.png">
+<link rel="manifest" href="http://dev.strong-pt.org/bcmap/manifest.json">
 
 <script type="text/javascript" src="js/jquery1.7.2.min.js"></script>
 <script type="text/javascript" src="js/generic_js_v2.0.2/jquery.GenericLibrary.js"></script>
@@ -79,7 +107,7 @@ $lng = ( $_GET['lng'] )? $_GET['lng']:0;
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key=AIzaSyDaa0rsAiEDcBen_Z4TVYhqY66jTp2_kUs&callback=InitMap" async defer></script>
 
 </head>
-<body>
+<body data-user="<?php echo $login_user['id']; ?>" oncontextmenu="return false;">
 	
 	
 	<div id="Map"
@@ -91,12 +119,34 @@ $lng = ( $_GET['lng'] )? $_GET['lng']:0;
 	</div>
 	
 	
+<?php if( $_SESSION['login_user']['group'] == 0 ): ?>
 	<nav id="Control">
 		<a href="<?php echo $url; ?>?lat=<?php echo $lat + 1; ?>&lng=<?php echo $lng; ?>" class="move-top">北</a>
 		<a href="<?php echo $url; ?>?lat=<?php echo $lat; ?>&lng=<?php echo $lng + 1; ?>" class="move-right">東</a>
 		<a href="<?php echo $url; ?>?lat=<?php echo $lat - 1; ?>&lng=<?php echo $lng; ?>" class="move-bottom">南</a>
 		<a href="<?php echo $url; ?>?lat=<?php echo $lat; ?>&lng=<?php echo $lng - 1; ?>" class="move-left">西</a>
 	</nav>
+<?php endif; ?>
+	
+	
+	<section id="information">
+	<!-- information -->
+<?php if( $_SESSION['login_user']['group'] != 0 ): ?>
+		<span class="login-user-name"><?php echo $login_user['first_name']; ?> <?php echo $login_user['last_name']; ?> 様</span>
+<?php else: ?>
+		<a href="./view/" class="view"><span class="material-icons">map</span></a>
+<?php endif; ?>
+		<a href="./logout/" class="logout"><span class="material-icons">lock</span></a>
+		
+	<!-- information --></section>
+	<div id="contextmenu">
+	<!-- contextmenu -->
+		
+		<ul>
+			<li class="is-ambiguous">あいまい登録</li>
+		</ul>
+		
+	<!-- contextmenu --></div>
 	
 	
 </body>

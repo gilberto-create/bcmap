@@ -22,12 +22,10 @@ require_once( '../config/functions.inc' );
  *	init
  */
 $db = db();
-$stmt = $db->query( 'select * from marker where address is null' );
-$result = $stmt->fetchAll( PDO::FETCH_ASSOC );
-
-
-
-/**
- *	return
- */
-echo json_encode( $result );
+$stmt = $db->query(sprintf(
+			'update marker set deleted = 1 where lat = "%s" and lng = "%s" and user = "%s"',
+			$_POST['lat'],
+			$_POST['lng'],
+			$_POST['user']
+		));
+echo $stmt->rowCount();

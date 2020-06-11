@@ -32,10 +32,13 @@ $lat = (float)$_POST['lat'];
 $lng = (float)$_POST['lng'];
 $rate = (float)$_POST['rate'];
 $query = 'select * from marker where deleted is null';
-$query .= ' and lat > '. ( $lat - $rate );
-$query .= ' and lat < '. ( $lat + $rate );
-$query .= ' and lng > '. ( $lng - $rate );
-$query .= ' and lng < '. ( $lng + $rate );
+if(!( $lat == 0 && $lng == 0 )) {
+	
+	$query .= ' and lat > '. ( $lat - $rate );
+	$query .= ' and lat < '. ( $lat + $rate );
+	$query .= ' and lng > '. ( $lng - $rate );
+	$query .= ' and lng < '. ( $lng + $rate );
+}
 $stmt = $db->query( $query );
 $result = $stmt->fetchAll( PDO::FETCH_ASSOC );
 
