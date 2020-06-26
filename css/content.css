@@ -11,6 +11,7 @@ html,
 body {
 	width: 100%;
 	height: 100%;
+	box-sizing: border-box;
 }
 body {
 	background: rgba( 0, 0, 0, 0.05 );
@@ -80,7 +81,7 @@ index
 #information span.login-user-name {
 	background: rgba( 255, 255, 255, 1 );
 	border-radius: 40px;
-	position: absolute;
+	position: fixed;
 		left: 50%; 
 		bottom: 24px;
 	transform: translateX( -50% );
@@ -92,7 +93,9 @@ index
 	z-index: 100;
 }
 #information a.view,
-#information a.logout {
+#information a.logout,
+#information a.manage,
+#information a.return {
 	background: rgba( 255, 64, 64, 1 );
 	box-shadow: 0 0 4px 0 rgba( 0, 0, 0, 0.15 );
 	border-radius: 100%;
@@ -112,6 +115,11 @@ index
 }
 #information a.view {
 	right: 72px;
+}
+#information a.manage,
+#information a.return {
+	left: 40px;
+	right: auto;
 }
 #contextmenu {
 	position: absolute;
@@ -204,4 +212,80 @@ login
 	color: rgba( 255, 255, 255, 1 );
 	cursor: pointer;
 	padding: 8px 24px;
+}
+
+
+
+/*==================================================
+
+dataView
+==================================================*/
+
+#dataView {
+	padding: 40px;
+}
+#dataView h2 {
+	margin-top: 40px;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+#dataView table {
+	margin-top: 16px;
+	margin-bottom: 40px;
+}
+#dataView table th,
+#dataView table td {
+	background: rgba( 255, 255, 255, 1 );
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid rgba( 0, 0, 0, 0.15 );
+	padding: 8px 16px;
+}
+#dataView table th {
+	background: rgba( 0, 0, 0, 0.05 );
+	font-weight: bold;
+}
+#dataView table thead {
+	background: rgba( 0, 0, 0, 0.05 );
+}
+#dataView table thead th {
+	text-align: center;
+}
+#dataView table td.number {
+	text-align: right;
+}
+
+
+
+/*==================================================
+
+add_tel
+==================================================*/
+
+#add_tel table th,
+#add_tel table td {
+	text-align: left;
+	vertical-align: middle;
+	border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
+	padding: 8px;
+}
+#add_tel table .noborder {
+	border: none;
+	padding-bottom: 0;
+}
+#add_tel table td.large {
+	font-size: 1.25em;
+}
+#add_tel table td label {
+	cursor: pointer;
+	border: 1px solid rgba( 0, 0, 0, 0.15 );
+	background: rgba( 0, 0, 0, 0.05 );
+	padding: 4px;
+	display: inline-block;
+}
+#add_tel table td label input {
+	margin-right: 2px;
+}
+#add_tel table td button {
+	cursor: pointer;
 }

@@ -89,7 +89,7 @@ $lng = ( $_GET['lng'] )? $_GET['lng']:0;
 <link rel="stylesheet" type="text/css" href="css/tablet/content.css">
 <link rel="stylesheet" type="text/css" href="css/mobile/template.css">
 <link rel="stylesheet" type="text/css" href="css/mobile/content.css">
-	
+	AIzaSyBrl3xYXt8ezwSeZrXSsqkJtNDl0-0h6pE
 <!-- app -->
 <meta name="apple-mobile-web-app-capable" content="no">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -131,6 +131,9 @@ $lng = ( $_GET['lng'] )? $_GET['lng']:0;
 	
 	<section id="information">
 	<!-- information -->
+<?php if( $_SESSION['login_user']['manager'] == 1 || $_SESSION['login_user']['group'] == 0 ): ?>
+		<a href="./manage/" class="manage"><span class="material-icons">trending_up</span></a>
+<?php endif; ?>
 <?php if( $_SESSION['login_user']['group'] != 0 ): ?>
 		<span class="login-user-name"><?php echo $login_user['first_name']; ?> <?php echo $login_user['last_name']; ?> 様</span>
 <?php else: ?>

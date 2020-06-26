@@ -25,7 +25,7 @@ $db = db();
 if( @$_POST['ambiguous'] == 1 ) {
 	
 	$stmt = $db->query(sprintf(
-				'insert into marker( lat, lng, address, user, ambiguous ) value( "%s", "%s", "%s", "%s", "%s" )',
+				'insert into marker( lat, lng, address, user, ambiguous, created, modified ) value( "%s", "%s", "%s", "%s", "%s", now(), now() )',
 				$_POST['lat'],
 				$_POST['lng'],
 				$_POST['address'],
@@ -35,7 +35,7 @@ if( @$_POST['ambiguous'] == 1 ) {
 } else {
 	
 	$stmt = $db->query(sprintf(
-				'insert into marker( lat, lng, address, user ) value( "%s", "%s", "%s", "%s" )',
+				'insert into marker( lat, lng, address, user, created, modified ) value( "%s", "%s", "%s", "%s", now(), now() )',
 				$_POST['lat'],
 				$_POST['lng'],
 				$_POST['address'],
