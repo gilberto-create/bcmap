@@ -58,7 +58,6 @@ function InitMap() {
 							zoom: DefaultZoom,
 							disableDefaultUI: true,
 							disableDoubleClickZoom: true,
-							mapTypeId: google.maps.MapTypeId.SATELLITE,
 							tilt: 0,
 							zoomControl: true
 						}

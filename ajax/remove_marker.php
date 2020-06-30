@@ -23,9 +23,8 @@ require_once( '../config/functions.inc' );
  */
 $db = db();
 $stmt = $db->query(sprintf(
-			'update marker set deleted = 1 where lat = "%s" and lng = "%s" and user = "%s"',
+			'update marker set deleted = 1 where lat = "%s" and lng = "%s"',
 			$_POST['lat'],
-			$_POST['lng'],
-			$_POST['user']
+			$_POST['lng']
 		));
 echo $stmt->rowCount();
