@@ -104,7 +104,7 @@ foreach( $result as $item ) {
 /**
  *	住所一覧
  */
-$stmt = $db->query( 'select * from marker where deleted is null and formated is null' );
+$stmt = $db->query( 'select * from marker where deleted is null and formated is null limit 5000' );
 $marker_list = $stmt->fetchAll( PDO::FETCH_ASSOC );
 ?>
 <table>
