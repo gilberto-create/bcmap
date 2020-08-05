@@ -123,7 +123,7 @@ $today_ambiguous = count( $today_ambiguous );
  *	ユーザー
  */
 $query = sprintf(
-		'select user.*, group.name as group_name from user join al5586_bcmap.group on user.group = group.id where user.deleted is null and group.deleted is null'
+		'select user.*, group.name as group_name, group.id as group_id from user join al5586_bcmap.group on user.group = group.id where user.deleted is null and group.deleted is null'
 	);
 if( $result[0]['group'] != 0 ) {
 	
@@ -210,6 +210,79 @@ $user_list = $user_list->fetchAll( PDO::FETCH_ASSOC );
 		</tr>
 	</table>
 	
+<?php
+if( $_SESSION['login_user']['group'] == 0 ):
+
+$area = ( $_GET['area'] )? $_GET['area']:'兵庫';
+?>
+	
+	<h2>作業状況<?php if( $area ): ?>（<?php echo $area; ?>）<?php endif; ?></h2>
+	<form style="margin-top: 16px;">
+		<p>作業エリア変更：<input type="text" name="area" value="<?php echo $area; ?>"> <input type="submit" name="変更"></p>
+   </form>
+<?php
+if( $area ):
+	
+$query = 'select
+	id,name,address,tel
+from
+	marker
+where
+	searched is not null and
+	deleted is null and
+	exported is null and
+	tel is not null and
+	tel != 0 and
+	ambiguous is null and
+	address like "%'. $area. '%"
+group by
+	tel';
+$syutokuzumi = $db->query( $query );
+$syutokuzumi = $syutokuzumi->fetchAll( PDO::FETCH_ASSOC );
+	
+$query = 'select
+	count(id)
+from
+	marker
+where
+	searched is null and
+	deleted is null and
+	ambiguous is null and
+	address like "%'. $area. '%"';
+$misyutoku = $db->query( $query );
+$misyutoku = $misyutoku->fetchAll( PDO::FETCH_ASSOC );
+	
+$query = 'select
+	count(id)
+from
+	marker
+where
+	searched is null and
+	deleted is null and
+	ambiguous is null and
+	address not like "%'. $area. '%"';
+$misyutoku_other = $db->query( $query );
+$misyutoku_other = $misyutoku_other->fetchAll( PDO::FETCH_ASSOC );
+?>
+	<table>
+		<tr>
+			<th>取得済み電話番号件数</th>
+			<td><?php echo count( $syutokuzumi ); ?></td>
+		</tr>
+		<tr>
+			<th>未取得住所件数</th>
+			<td><?php echo $misyutoku[0]['count(id)']; ?></td>
+		</tr>
+		<tr>
+			<th><?php echo $area; ?>以外の未取得住所件数</th>
+			<td><?php echo $misyutoku_other[0]['count(id)']; ?></td>
+		</tr>
+	</table>
+<?php
+endif;
+endif;
+?>
+	
 	<h2>ユーザー別</h2>
 	<table>
 		<thead>
@@ -225,7 +298,7 @@ $user_list = $user_list->fetchAll( PDO::FETCH_ASSOC );
 <?php foreach( $user_list as $user ): ?>
 		<tr>
 			<th><?php echo $user['first_name']; ?> <?php echo $user['last_name']; ?></th>
-			<td><?php echo $user['group_name']; ?></td>
+			<td><a href="?group=<?php echo $user['group_id']; ?>"><?php echo $user['group_name']; ?></a></td>
 			<td class="number"><?php echo @count( $marker_list[$user['id']] ); ?><br>
 				( 内本日 : <?php echo @count( $today_marker_list[$user['id']] ); ?> )</td>
 			<td class="number"><?php echo @count( $ambiguous_list[$user['id']] ); ?><br>

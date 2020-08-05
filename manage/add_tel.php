@@ -45,9 +45,11 @@ if( empty( $result ) ) {
 	$login_user = $_SESSION['login_user'];
 }
 $page = ( $_GET['page'] )? $_GET['page']:1;
+$area = ( $_GET['area'] )? $_GET['area']:'兵庫';
 $amount = 1000;
 $marker_list = $db->query(sprintf(
-		'select * from marker where deleted is null and formated = 1 and searched is null and city like "%%長野%%" limit %d offset %d',
+		'select * from marker where deleted is null and formated = 1 and searched is null and city like "%%%s%%" limit %d offset %d',
+		$area,
 		$amount,
 		( $page - 1 ) * $amount
 	));
@@ -95,6 +97,9 @@ $marker_list = $db->query(sprintf(
 
 </head>
 <body data-user="<?php echo $login_user['id']; ?>" id="add_tel">
+	<form>
+		<p>作業エリア変更：<input type="text" name="area" value="<?php echo $area; ?>"> <input type="submit" name="変更"></p>
+   </form>
 <table>
 <?php foreach( $marker_list as $marker ): ?>
 	<tr data-id="<?php echo $marker['id']; ?>">
@@ -111,8 +116,8 @@ $marker_list = $db->query(sprintf(
 <?php endforeach; ?>
 </table>
 <footer>
-<a href="<?php echo $url; ?>?page=<?php echo $page - 1; ?>">前へ</a>
-<a href="<?php echo $url; ?>?page=<?php echo $page + 1; ?>">次へ</a>
+<a href="<?php echo $url; ?>?page=<?php echo $page - 1; ?>&area=<?php echo $area; ?>">前へ</a>
+<a href="<?php echo $url; ?>?page=<?php echo $page + 1; ?>&area=<?php echo $area; ?>">次へ</a>
 </footer>
 </body>
 </html>
